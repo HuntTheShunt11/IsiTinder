@@ -16,7 +16,6 @@ public class CardAdapterWebDataListener implements WebDataListener {
     @Override
     public void onDataReceived(Results listUsers) {
         dataCardsAdapter.addAll(listUsers.results);
-        Log.d("Cardlistener", "appel de recupData");
     }
 
     @Override

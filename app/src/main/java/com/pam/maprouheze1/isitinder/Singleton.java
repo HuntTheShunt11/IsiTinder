@@ -21,7 +21,7 @@ public final class Singleton {
     private static Singleton mInstance = null;
 
     private Results listUsers;
-    private int position;
+    private int position;//à retirer
     private int nbUsersToRequest;
     private int nbUsersList;
     private Context appContext;
@@ -46,52 +46,38 @@ public final class Singleton {
     }
 
     public void recupData(final WebDataListener listener) {
-        if (listUsers == null || listUsers.getCurrentIndex() == nbUsersList-1) {
-            Log.d("singleton", "entreeRecupdata");
-            // Instantiate the RequestQueue.
-            RequestQueue queue = Volley.newRequestQueue(appContext);
-            String url = "https://randomuser.me/api/?format=json&results="+nbUsersToRequest+"&nat=fr";
+        Log.d("singleton", "entreeRecupdata");
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(appContext);
+        String url = "https://randomuser.me/api/?format=json&results="+nbUsersToRequest+"&nat=fr";
 
-            // Request a string response from the provided URL.
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.d("singleton", "onResponse");
-                            final Gson gson = new Gson();
-                            listUsers = gson.fromJson(response, Results.class);
-                            if (listUsers == null) {
-                                Log.e("Deserialisation", "Json non parsé! ");
-                            }
-                            nbUsersList = listUsers.results.size();
-                            listener.onDataReceived(listUsers);
-
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("singleton", "onResponse");
+                        final Gson gson = new Gson();
+                        listUsers = gson.fromJson(response, Results.class);
+                        if (listUsers == null) {
+                            Log.e("Deserialisation", "Json non parsé! ");
                         }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("Appel reseau", "That didn't work!: ");
-                    listener.onError("erreur");
-                }
-            });
+                        nbUsersList = listUsers.results.size();
+                        listener.onDataReceived(listUsers);
 
-            // Add the request to the RequestQueue.
-            queue.add(stringRequest);
-        }else{
-            listener.onDataReceived(listUsers);
-        }
-    }
-    public int getPosition(){
-        return position;
-    }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Appel reseau", "That didn't work!: ");
+                listener.onError("erreur");
+            }
+        });
 
-    public void setPosition(int pos){
-        position = pos;
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
-
-    public void incrPosition(){
-        position++;
-    }
+    
 
     public Results getListUsers() {
         return listUsers;

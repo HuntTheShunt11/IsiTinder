@@ -1,8 +1,8 @@
 package com.pam.maprouheze1.isitinder;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -41,25 +41,15 @@ public class DetailActivity extends AppCompatActivity {
 
         singUsers = Singleton.getInstance(getApplicationContext());
 
-        singUsers.recupData(new WebDataListener() {
+        currentUser = singUsers.getListUsers().results.get(singUsers.getListUsers().getCurrentIndex()).user;
+        Log.d("onCreate DetailActivity", "currentIndex au demarrage: " + singUsers.getListUsers().getCurrentIndex());
+        showUser();
+
+       /* singUsers.recupData(new WebDataListener() {
             @Override
             public void onDataReceived(Results listUsers) {
                 currentUser = singUsers.getListUsers().results.get(singUsers.getListUsers().getCurrentIndex()).user;
-                String prenom = currentUser.name.first;
-                setTitle(prenom);
-
-                String nom = currentUser.name.last;
-                userName.setText(nom);
-                long age = currentUser.getAge();
-                userAge.setText("" + age);
-
-                String locationstr = currentUser.getLocation().toString();
-                location.setText(locationstr);
-
-                String emailAddress = currentUser.getEmail().toString();
-                email.setText(emailAddress);
-
-                Picasso.with(getApplicationContext()).load(currentUser.picture.medium).into(imageView); //chargement premiere image
+                showUser();
 
             }
 
@@ -67,29 +57,15 @@ public class DetailActivity extends AppCompatActivity {
             public void onError(String errorDescription) {
 
             }
-        });
-        View.OnClickListener buttonListener = new View.OnClickListener() {
+        });*/
+
+       /* View.OnClickListener buttonListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (singUsers.getListUsers().hasNext()) {
                     currentUser = singUsers.getListUsers().next().user;
                     singUsers.getListUsers().IncCurrentIndex();
-                    String prenom = currentUser.name.first;
-                    setTitle(prenom);
-
-                    String nom = currentUser.name.last;
-                    userName.setText(nom);
-
-
-                    long age = currentUser.getAge();
-                    userAge.setText("" + age);
-
-                    String locationstr = currentUser.getLocation().toString();
-                    location.setText(locationstr);
-                    Picasso.with(getApplicationContext()).load(currentUser.picture.medium).into(imageView);
-                    
-                    String emailAddress = currentUser.getEmail().toString();
-                    email.setText(emailAddress);
+                    showUser();
 
                     // updateView
                 } else {
@@ -99,23 +75,9 @@ public class DetailActivity extends AppCompatActivity {
                         public void onDataReceived(Results listUsers) {
                             currentUser = singUsers.getListUsers().results.get(0).user;
 
-                            singUsers.setPosition(0);//à quoi ça sert?
+                            //singUsers.setPosition(0);//à quoi ça sert?
 
-                            String prenom = currentUser.name.first;
-                            setTitle(prenom);
-
-                            String nom = currentUser.name.last;
-                            userName.setText(nom);
-                            long age =   currentUser.getAge();
-                            userAge.setText("" + age);
-
-                            String locationstr = currentUser.getLocation().toString();
-                            location.setText(locationstr);
-
-                            String emailAddress = currentUser.getEmail().toString();
-                            email.setText(emailAddress);
-
-                            Picasso.with(getApplicationContext()).load(currentUser.picture.medium).into(imageView); //chargement premiere image
+                           showUser();
 
                         }
 
@@ -126,10 +88,28 @@ public class DetailActivity extends AppCompatActivity {
                     });
                 }
             }
-        };
+        };*/
 
-        likeButton.setOnClickListener(buttonListener);
-        nopeButton.setOnClickListener(buttonListener);
+        likeButton.setOnClickListener(new DetailButtonListener(this));
+        nopeButton.setOnClickListener(new DetailButtonListener(this));
 
+    }
+
+    protected void showUser(){
+        String prenom = currentUser.name.first;
+        setTitle(prenom);
+
+        String nom = currentUser.name.last;
+        userName.setText(nom);
+        long age =   currentUser.getAge();
+        userAge.setText("" + age);
+
+        String locationstr = currentUser.getLocation().toString();
+        location.setText(locationstr);
+
+        String emailAddress = currentUser.getEmail().toString();
+        email.setText(emailAddress);
+
+        Picasso.with(getApplicationContext()).load(currentUser.picture.large).into(imageView); //chargement premiere image
     }
 }

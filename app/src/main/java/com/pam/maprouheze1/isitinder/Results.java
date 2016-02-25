@@ -21,16 +21,14 @@ public class Results {
     public boolean hasNext() {
         return (currentIndex + 1) < results.size();
     }
-    public boolean hasNextNext() {
-        return (currentIndex + 2) < results.size();
-    }
+
     public Result next() {
         ++currentIndex;
         return results.get(currentIndex);
     }
-    public void IncCurrentIndex(){
+    /*public void IncCurrentIndex(){
         ++currentIndex;
-    }
+    }*/
 
     public int getCurrentIndex()
     {

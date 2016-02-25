@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,72 +49,18 @@ public class MainActivity extends AppCompatActivity {
         mCardStack = (CardStack)findViewById(R.id.container);
         mCardStack.setContentResource(R.layout.card_layout);
         mCardStack.setStackMargin(20);
+        mCardStack.setAdapter(mCardAdapter);
+
         CardListener cardListener = new CardListener(this, mCardAdapter);
         mCardStack.setListener(cardListener);
 
 
-        View.OnClickListener buttonListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!singUsers.getListUsers().hasNext()) {
-                    // update data
-                    singUsers.recupData(new WebDataListener() {
-                        @Override
-                        public void onDataReceived(Results listUsers) {
-                            mCardAdapter.addAll(listUsers.results);
-                            Log.d(TAG, "appel de recupData");
-                        }
-
-                        @Override
-                        public void onError(String errorDescription) {
-
-                        }
-                    });
-                }
-
-                // updateView
-                if (v.getId() == R.id.like){
-                    mCardStack.discardTop(1);
-                } else{
-
-                    mCardStack.discardTop(0);
-                }
-                // singUsers.incrPosition();
-                //singUsers.getListUsers().IncCurrentIndex(); //plus besoin de l'appeler on le fait dans le card listener
-
-            }
-        };
-        View.OnClickListener pictureListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-               // intent.putExtra("User", currentUser);
-                startActivity(intent);
-            }
-        };
-
-       // imageView.setOnClickListener(pictureListener);
-        likeButton.setOnClickListener(buttonListener);
-        nopeButton.setOnClickListener(buttonListener);
+        likeButton.setOnClickListener(new MainButtonListener(mCardStack));
+        nopeButton.setOnClickListener(new MainButtonListener(mCardStack));
 
         singUsers = Singleton.getInstance(getApplicationContext());
 
-        singUsers.recupData(new WebDataListener() {
-            @Override
-            public void onDataReceived(Results listUsers) {
-
-                //mCardAdapter = new CardsDataAdapter(getApplicationContext(),0, listUsers.results);
-                mCardAdapter.addAll(listUsers.results);
-                mCardStack.setAdapter(mCardAdapter);
-
-            }
-
-            @Override
-            public void onError(String errorDescription) {
-
-            }
-        });
+        singUsers.recupData(new MainActivityWebDataListener(mCardAdapter));
 
     }
 
@@ -122,7 +69,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         Log.d(TAG, "redemarrage de l'appli!");
-        currentUser = singUsers.getListUsers().results.get(singUsers.getPosition()).user;
+        Log.d("OnRestart","currentIndex au redemarrage: "+singUsers.getListUsers().getCurrentIndex());
+        //currentUser = singUsers.getListUsers().results.get(singUsers.getListUsers().getCurrentIndex()).user; //à enlever
+
+        mCardStack.reset(true);
+        mCardAdapter.clear();
+
+        List<Result> list = singUsers.getListUsers().results;
+
+        for(int i = singUsers.getListUsers().getCurrentIndex(); i < list.size() ; ++i) {
+            mCardAdapter.add(list.get(i));
+        }
+
+
+
         //à modifier pour récupérer l'image
 
         /*String nom = currentUser.name.first;

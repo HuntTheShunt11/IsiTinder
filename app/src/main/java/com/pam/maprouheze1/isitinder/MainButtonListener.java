@@ -36,11 +36,10 @@ public class MainButtonListener implements View.OnClickListener{
                 }*/
 
         // updateView
-        if (v.getId() == R.id.like){
-            cardStack.discardTop(1);
+        if (v.getId() == R.id.like){  //si l'utilisateur clique like
+            cardStack.discardTop(1); //on enleve la carte au sommet de la pile vers la droite
         } else{
-
-            cardStack.discardTop(0);
+            cardStack.discardTop(0);//ou vers la gauche si il clique le bouton nope
         }
 
         /*Log.d("listener bouton", "taille de CardAdapter: " + mCardAdapter.getCount());
