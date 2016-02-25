@@ -1,9 +1,11 @@
-package com.pam.maprouheze1.isitinder;
+package com.pam.maprouheze1.isitinder.MainActClasses;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.pam.maprouheze1.isitinder.DataModel.Singleton;
+import com.pam.maprouheze1.isitinder.DetailActClasses.DetailActivity;
 import com.wenchao.cardstack.CardStack;
 
 /**

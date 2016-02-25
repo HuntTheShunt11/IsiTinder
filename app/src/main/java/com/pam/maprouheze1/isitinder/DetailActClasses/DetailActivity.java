@@ -1,13 +1,15 @@
-package com.pam.maprouheze1.isitinder;
+package com.pam.maprouheze1.isitinder.DetailActClasses;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.pam.maprouheze1.isitinder.DataModel.Singleton;
+import com.pam.maprouheze1.isitinder.DataModel.User;
+import com.pam.maprouheze1.isitinder.R;
 import com.squareup.picasso.Picasso;
 
 public class DetailActivity extends AppCompatActivity {

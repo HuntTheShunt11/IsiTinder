@@ -1,4 +1,4 @@
-package com.pam.maprouheze1.isitinder;
+package com.pam.maprouheze1.isitinder.DataModel;
 
 /**
  * Created by maprouheze1 on 27/01/2016.

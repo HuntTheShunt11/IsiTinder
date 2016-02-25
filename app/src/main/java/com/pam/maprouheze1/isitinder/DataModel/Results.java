@@ -1,4 +1,4 @@
-package com.pam.maprouheze1.isitinder;
+package com.pam.maprouheze1.isitinder.DataModel;
 
 import java.util.List;
 

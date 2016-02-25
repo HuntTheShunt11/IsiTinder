@@ -1,9 +1,10 @@
-package com.pam.maprouheze1.isitinder;
+package com.pam.maprouheze1.isitinder.DetailActClasses;
 
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.squareup.picasso.Picasso;
+import com.pam.maprouheze1.isitinder.DataModel.Results;
+import com.pam.maprouheze1.isitinder.DataModel.Singleton;
+import com.pam.maprouheze1.isitinder.MainActClasses.WebDataListener;
 
 /**
  * Created by Maxime on 25/02/2016.

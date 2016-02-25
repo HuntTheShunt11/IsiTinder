@@ -1,4 +1,4 @@
-package com.pam.maprouheze1.isitinder;
+package com.pam.maprouheze1.isitinder.DataModel;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,9 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
-
-import java.util.List;
+import com.pam.maprouheze1.isitinder.MainActClasses.WebDataListener;
 
 /**
  * Created by maprouheze1 on 03/02/2016.
@@ -77,7 +75,7 @@ public final class Singleton {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
-    
+
 
     public Results getListUsers() {
         return listUsers;

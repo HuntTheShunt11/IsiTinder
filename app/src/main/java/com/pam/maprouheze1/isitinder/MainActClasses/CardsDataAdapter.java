@@ -1,4 +1,4 @@
-package com.pam.maprouheze1.isitinder;
+package com.pam.maprouheze1.isitinder.MainActClasses;
 
 import android.content.Context;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.pam.maprouheze1.isitinder.DataModel.Result;
+import com.pam.maprouheze1.isitinder.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
