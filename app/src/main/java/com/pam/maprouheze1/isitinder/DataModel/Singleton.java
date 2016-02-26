@@ -26,7 +26,7 @@ public final class Singleton {
     private Singleton(Context context) {
         super();
         appContext = context;
-        nbUsersToRequest = 5;
+        nbUsersToRequest = 50;
     }
 
     public final static Singleton getInstance(Context context) {//methode pour recuperer le singleton
