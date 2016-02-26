@@ -10,6 +10,8 @@ import com.pam.maprouheze1.isitinder.DataModel.User;
 import com.pam.maprouheze1.isitinder.R;
 import com.wenchao.cardstack.CardStack;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -89,6 +91,28 @@ public class MainActivity extends AppCompatActivity {
         long age =   currentUser.getAge();
         userAge.setText(", " + age);
         Picasso.with(getApplicationContext()).load(currentUser.picture.medium).into(imageView); //chargement premiere image*/
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.appmenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.action_refresh:
+                mCardAdapter.clear();
+                singUsers.recupData(new MainActivityWebDataListener(mCardAdapter));
+                mCardStack.reset(true);
+                break;
+            default:
+                break;
+        }
+
+        return true;
     }
 
     @Override

@@ -3,12 +3,16 @@ package com.pam.maprouheze1.isitinder.DetailActClasses;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.pam.maprouheze1.isitinder.DataModel.Results;
 import com.pam.maprouheze1.isitinder.DataModel.Singleton;
 import com.pam.maprouheze1.isitinder.DataModel.User;
+import com.pam.maprouheze1.isitinder.MainActClasses.WebDataListener;
 import com.pam.maprouheze1.isitinder.R;
 import com.squareup.picasso.Picasso;
 
@@ -113,5 +117,35 @@ public class DetailActivity extends AppCompatActivity {
         email.setText(emailAddress);
 
         Picasso.with(getApplicationContext()).load(currentUser.picture.large).into(imageView); //chargement premiere image
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.appmenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh: //si l'action de refresh a ete selectionnee
+                singUsers.recupData(new WebDataListener() { //on lance l'appel reseau pour recuperer les donnees
+                    @Override
+                    public void onDataReceived(Results listUsers) { //quand on reçoit les resultats
+                        currentUser = singUsers.getListUsers().results.get(0).user; //l'utilisateur courant est celui avec l'id 0
+                        showUser();//et on l'affiche
+                    }
+
+                    @Override
+                    public void onError(String errorDescription) {
+
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+
+        return true;
     }
 }
