@@ -20,34 +20,12 @@ public class MainButtonListener implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-                /*if (!singUsers.getListUsers().hasNext()) {
-                    // update data
-                    singUsers.recupData(new WebDataListener() {
-                        @Override
-                        public void onDataReceived(Results listUsers) {
-                            mCardAdapter.addAll(listUsers.results);
-                            Log.d(TAG, "appel de recupData par les boutons");
-                        }
-
-                        @Override
-                        public void onError(String errorDescription) {
-
-                        }
-                    });
-                }*/
-
         // updateView
         if (v.getId() == R.id.like){  //si l'utilisateur clique like
-            cardStack.discardTop(1); //on enleve la carte au sommet de la pile vers la droite
+            cardStack.discardTop(1); //on enleve la carte au sommet de la pile de cartes vers la droite
         } else{
             cardStack.discardTop(0);//ou vers la gauche si il clique le bouton nope
         }
-
-        /*Log.d("listener bouton", "taille de CardAdapter: " + mCardAdapter.getCount());
-
-        Log.d("listener bouton", "taille de listUsers: " + singUsers.getListUsers().results.size());*/
-        // singUsers.incrPosition();
-        //singUsers.getListUsers().IncCurrentIndex(); //plus besoin de l'appeler on le fait dans le card listener
 
     }
 }

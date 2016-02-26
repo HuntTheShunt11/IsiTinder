@@ -1,5 +1,7 @@
 package com.pam.maprouheze1.isitinder.DetailActClasses;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pam.maprouheze1.isitinder.DataModel.Results;
 import com.pam.maprouheze1.isitinder.DataModel.Singleton;
@@ -35,7 +38,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-
+        //on recupere chaque element de l'interface graphique
         userName = (TextView) findViewById(R.id.name);
         userAge = (TextView) findViewById(R.id.age);
         likeButton = (Button) findViewById(R.id.like);
@@ -44,84 +47,41 @@ public class DetailActivity extends AppCompatActivity {
         location = (TextView) findViewById(R.id.location);
         email = (TextView) findViewById(R.id.email);
 
-
+        //on recupere le singleton
         singUsers = Singleton.getInstance(getApplicationContext());
 
+        //on definit l'utlisateur courant
         currentUser = singUsers.getListUsers().results.get(singUsers.getListUsers().getCurrentIndex()).user;
-        Log.d("onCreate DetailActivity", "currentIndex au demarrage: " + singUsers.getListUsers().getCurrentIndex());
-        showUser();
+        showUser();//et on l'affiche
 
-       /* singUsers.recupData(new WebDataListener() {
-            @Override
-            public void onDataReceived(Results listUsers) {
-                currentUser = singUsers.getListUsers().results.get(singUsers.getListUsers().getCurrentIndex()).user;
-                showUser();
-
-            }
-
-            @Override
-            public void onError(String errorDescription) {
-
-            }
-        });*/
-
-       /* View.OnClickListener buttonListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (singUsers.getListUsers().hasNext()) {
-                    currentUser = singUsers.getListUsers().next().user;
-                    singUsers.getListUsers().IncCurrentIndex();
-                    showUser();
-
-                    // updateView
-                } else {
-                    // update data
-                    singUsers.recupData(new WebDataListener() {
-                        @Override
-                        public void onDataReceived(Results listUsers) {
-                            currentUser = singUsers.getListUsers().results.get(0).user;
-
-                            //singUsers.setPosition(0);//à quoi ça sert?
-
-                           showUser();
-
-                        }
-
-                        @Override
-                        public void onError(String errorDescription) {
-
-                        }
-                    });
-                }
-            }
-        };*/
-
+        //pour les deux boutons on definit un listener
         likeButton.setOnClickListener(new DetailButtonListener(this));
         nopeButton.setOnClickListener(new DetailButtonListener(this));
 
     }
 
     protected void showUser(){
-        String prenom = currentUser.name.first;
-        setTitle(prenom);
+        String prenom = currentUser.name.first; //on recupere le prenom
+        setTitle(prenom);//et on l'affiche
 
-        String nom = currentUser.name.last;
-        userName.setText(nom);
-        long age =   currentUser.getAge();
-        userAge.setText("" + age);
+        String nom = currentUser.name.last; //on recupere le nom
+        userName.setText(nom);//et on l'affiche
 
-        String locationstr = currentUser.getLocation().toString();
-        location.setText(locationstr);
+        long age = currentUser.getAge();//recuperation de l'age
+        userAge.setText("" + age);//et affichage
 
-        String emailAddress = currentUser.getEmail().toString();
-        email.setText(emailAddress);
+        String locationstr = currentUser.getLocation().toString(); //recuperation de l'adresse postale
+        location.setText(locationstr);//et affichage
 
-        Picasso.with(getApplicationContext()).load(currentUser.picture.large).into(imageView); //chargement premiere image
+        String emailAddress = currentUser.getEmail().toString();//recuperation de l'adresse mail
+        email.setText(emailAddress);//et affichage
+
+        Picasso.with(getApplicationContext()).load(currentUser.picture.large).into(imageView); //affichage de l'image
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.appmenu, menu);
+        getMenuInflater().inflate(R.menu.appmenu, menu); //on defini le menu de l'application avec le fichier xml correspondant (appmenu)
         return true;
     }
 
@@ -138,6 +98,15 @@ public class DetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(String errorDescription) {
+                        ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+
+                        NetworkInfo DataOn = manager.getActiveNetworkInfo();
+
+                        if (DataOn == null)
+                        {
+                            String text = "Impossible de récupérer des utilisateurs, vérifier que les données mobiles ou le wifi sont activés et appuyer sur le bouton recharger pour récuperer des profils";
+                            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+                        }
 
                     }
                 });

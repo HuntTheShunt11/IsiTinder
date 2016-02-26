@@ -25,13 +25,14 @@ public class CardsDataAdapter extends ArrayAdapter<Result> {
     @Override
     public View getView(int position, final View contentView, ViewGroup parent){
         //supply the layout for your card
-        Result result = getItem(position);
+        //on definit l'affichage pour la carte
+        Result result = getItem(position);//on recupere l'utilisateur
 
-        TextView name = (TextView)(contentView.findViewById(R.id.name));
+        TextView name = (TextView)(contentView.findViewById(R.id.name));//on recupere le nom et on l'affiche dans la carte
         name.setText(result.user.name.first);
-        TextView age = (TextView)(contentView.findViewById(R.id.age));
+        TextView age = (TextView)(contentView.findViewById(R.id.age));//meme chose pour l'age
         age.setText(", "+result.user.getAge());
-        ImageView imageView = (ImageView) (contentView.findViewById(R.id.imageView));
+        ImageView imageView = (ImageView) (contentView.findViewById(R.id.imageView));//et l'image
         Picasso.with(getContext()).load(result.user.picture.large).into(imageView);
 
         return contentView;

@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     CardStack mCardStack;
     CardsDataAdapter mCardAdapter;
     ImageView imageView;
-    User currentUser;
 
     private final static String TAG = "MainActivity";
     @Override
@@ -38,30 +37,36 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "demarrage de l'appli");
 
+        //on recupere chaque element de l'interface graphique
         userName = (TextView) findViewById(R.id.name);
         userAge = (TextView) findViewById(R.id.age);
         likeButton = (Button) findViewById(R.id.like);
         nopeButton = (Button) findViewById(R.id.nope);
         imageView = (ImageView) findViewById(R.id.imageView);
 
-
+        //on definit l'array adapter specifique aux cards (CardsDatadapter)
         mCardAdapter = new CardsDataAdapter(this, 0, new ArrayList<Result>());
 
+        //on definit la card stack
         mCardStack = (CardStack)findViewById(R.id.container);
         mCardStack.setContentResource(R.layout.card_layout);
         mCardStack.setStackMargin(20);
+        //et on definit son adapter qui est mCardAapter
         mCardStack.setAdapter(mCardAdapter);
 
+        //on cree un listener pour la card stack et on lui attache
         CardListener cardListener = new CardListener(this, mCardAdapter);
         mCardStack.setListener(cardListener);
 
-
+        //on definit les listeners pour les boutons like et nope
         likeButton.setOnClickListener(new MainButtonListener(mCardStack));
         nopeButton.setOnClickListener(new MainButtonListener(mCardStack));
 
+        //on recupere l'instance du singleton
         singUsers = Singleton.getInstance(getApplicationContext());
 
-        singUsers.recupData(new MainActivityWebDataListener(mCardAdapter));
+        //et on lance un appel reseau pour recuperer des utilisateurs
+        singUsers.recupData(new MainActivityWebDataListener(mCardAdapter, this));
 
     }
 
@@ -70,43 +75,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         Log.d(TAG, "redemarrage de l'appli!");
-        Log.d("OnRestart","currentIndex au redemarrage: "+singUsers.getListUsers().getCurrentIndex());
-        //currentUser = singUsers.getListUsers().results.get(singUsers.getListUsers().getCurrentIndex()).user; //à enlever
 
-        mCardStack.reset(true);
-        mCardAdapter.clear();
+        if(singUsers.getListUsers()!= null) {
 
-        List<Result> list = singUsers.getListUsers().results;
+            mCardStack.reset(true);//au retour a la main activity on reset la card stack
+            mCardAdapter.clear();//on vide le card adapter
 
-        for(int i = singUsers.getListUsers().getCurrentIndex(); i < list.size() ; ++i) {
-            mCardAdapter.add(list.get(i));
+            List<Result> list = singUsers.getListUsers().results;//on recupere les results du singleton
+
+            for (int i = singUsers.getListUsers().getCurrentIndex(); i < list.size(); ++i) {//et on remplit le card adapter avec l'utlisateur courant et les suivants du singleton
+                mCardAdapter.add(list.get(i));
+            }
         }
 
-
-
-        //à modifier pour récupérer l'image
-
-        /*String nom = currentUser.name.first;
-        userName.setText(nom);
-        long age =   currentUser.getAge();
-        userAge.setText(", " + age);
-        Picasso.with(getApplicationContext()).load(currentUser.picture.medium).into(imageView); //chargement premiere image*/
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.appmenu, menu);
+        getMenuInflater().inflate(R.menu.appmenu, menu);//on defini le menu de l'application avec le fichier xml correspondant (appmenu)
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // action with ID action_refresh was selected
+            //si l'action de refresh a ete selectionnee
             case R.id.action_refresh:
-                mCardAdapter.clear();
-                singUsers.recupData(new MainActivityWebDataListener(mCardAdapter));
-                mCardStack.reset(true);
+                mCardAdapter.clear(); //on vide le Card Adapter
+                singUsers.recupData(new MainActivityWebDataListener(mCardAdapter, this)); //on fait un appel reseau pour recuperer les donnees
+                mCardStack.reset(true);//et on reset la card stack
                 break;
             default:
                 break;

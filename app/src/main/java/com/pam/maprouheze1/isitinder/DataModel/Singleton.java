@@ -2,6 +2,7 @@ package com.pam.maprouheze1.isitinder.DataModel;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,19 +20,16 @@ public final class Singleton {
     private static Singleton mInstance = null;
 
     private Results listUsers;
-    private int position;//à retirer
     private int nbUsersToRequest;
-    private int nbUsersList;
     private Context appContext;
 
     private Singleton(Context context) {
         super();
         appContext = context;
         nbUsersToRequest = 5;
-        nbUsersList = 5;
     }
 
-    public final static Singleton getInstance(Context context) {
+    public final static Singleton getInstance(Context context) {//methode pour recuperer le singleton
         if (mInstance == null) {
             synchronized (Singleton.class) {
                 if (mInstance == null) {
@@ -45,6 +43,12 @@ public final class Singleton {
 
     public void recupData(final WebDataListener listener) {
         Log.d("singleton", "entreeRecupdata");
+
+        String text = "Récupération d'utilisateurs en cours...";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(appContext, text, duration);//affichage d'un message pour indiquer l'appel reseau
+        toast.show();
+
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(appContext);
         String url = "https://randomuser.me/api/?format=json&results="+nbUsersToRequest+"&nat=fr";
@@ -57,18 +61,17 @@ public final class Singleton {
                         Log.d("singleton", "onResponse");
                         final Gson gson = new Gson();
                         listUsers = gson.fromJson(response, Results.class);
-                        if (listUsers == null) {
-                            Log.e("Deserialisation", "Json non parsé! ");
+                        if (listUsers == null) {//si la liste d'utlisateurs est vide
+                            Log.e("Deserialisation", "Json non parsé! ");//on log que le json a ete mal parse
                         }
-                        nbUsersList = listUsers.results.size();
                         listener.onDataReceived(listUsers);
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("Appel reseau", "That didn't work!: ");
-                listener.onError("erreur");
+                Log.e("Appel reseau", "erreur lors de l'appel reseau");
+                listener.onError("erreur lors de l'appel reseau: " + error.getMessage());
             }
         });
 
@@ -79,10 +82,6 @@ public final class Singleton {
 
     public Results getListUsers() {
         return listUsers;
-    }
-
-    public void setListUsers(Results listUsers) {
-        this.listUsers = listUsers;
     }
 
 }

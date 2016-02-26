@@ -13,10 +13,10 @@ import com.wenchao.cardstack.CardStack;
  */
 class CardListener implements CardStack.CardEventListener {
 
-    AppCompatActivity mainActivity;
+    MainActivity mainActivity;
     CardsDataAdapter dataCardsAdapter;
     Singleton singUsers;
-    public CardListener(AppCompatActivity activity, CardsDataAdapter cardAdapter) {
+    public CardListener(MainActivity activity, CardsDataAdapter cardAdapter) {
         mainActivity = activity;
         dataCardsAdapter = cardAdapter;
         singUsers = Singleton.getInstance(mainActivity.getApplicationContext());
@@ -56,25 +56,22 @@ class CardListener implements CardStack.CardEventListener {
         //this callback invoked when dismiss animation is finished.
         //quand la carte a ete enlevee (fin du mouvement) cette fonction est appelee
         Log.d("CardListener", "appel de discarded");
-        Log.d("CardListener Discarded", "currentIndex avant incr: "+singUsers.getListUsers().getCurrentIndex());
-        if (!singUsers.getListUsers().hasNext()) {
-            // update data
 
+        if (!singUsers.getListUsers().hasNext()) {//si le singleton n'a pas d'utilisateur suivant
+            // update data
             Log.d("Cardlistener", "appel de recupData");
-            singUsers.recupData(new CardAdapterWebDataListener(dataCardsAdapter));
-        }else{
-            singUsers.getListUsers().next();//on incrémente la position de l'utilisateur courant
-            Log.d("CardListener Discarded", "currentIndex après incrementation: " + singUsers.getListUsers().getCurrentIndex());
-            Log.d("CardListener Discarded","nb dataCardAdapter incrementation: "+dataCardsAdapter.getCount());
+            singUsers.recupData(new MainActivityWebDataListener(dataCardsAdapter, mainActivity));//on fait un appel reseau pour en recuperer
+
+        }else{//sinon s'il reste des utilisateurs dans le singleton
+            singUsers.getListUsers().next();//on incremente la position de l'utilisateur courant
         }
     }
 
     @Override
     public void topCardTapped() {
             //this callback invoked when a top card is tapped by user.
-            //si la carte du dessu est tappee, on lance l'activite detail
+            //si la carte du dessus est tappee, on lance l'activite detail
             Intent intent = new Intent(mainActivity.getApplicationContext(), DetailActivity.class);
-                // intent.putExtra("User", currentUser);
                 mainActivity.startActivity(intent);
             }
 }
