@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.pam.maprouheze1.isitinder.DataModel.Result;
 import com.pam.maprouheze1.isitinder.DataModel.Singleton;
-import com.pam.maprouheze1.isitinder.DataModel.User;
 import com.pam.maprouheze1.isitinder.R;
 import com.wenchao.cardstack.CardStack;
 
@@ -76,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         Log.d(TAG, "redemarrage de l'appli!");
 
-        if(singUsers.getListUsers()!= null) {
+        if(singUsers.getListUsers()!= null) {//si le singleton n'est pas vide
 
             mCardStack.reset(true);//au retour a la main activity on reset la card stack
             mCardAdapter.clear();//on vide le card adapter
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "pause de l'appli!");
+        Log.d(TAG, "pause de l'appli");
     }
 
     @Override

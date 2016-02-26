@@ -1,6 +1,7 @@
 package com.pam.maprouheze1.isitinder.MainActClasses;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -30,8 +31,10 @@ public class CardsDataAdapter extends ArrayAdapter<Result> {
 
         TextView name = (TextView)(contentView.findViewById(R.id.name));//on recupere le nom et on l'affiche dans la carte
         name.setText(result.user.name.first);
+        name.setTextColor(Color.WHITE);
         TextView age = (TextView)(contentView.findViewById(R.id.age));//meme chose pour l'age
         age.setText(", "+result.user.getAge());
+        age.setTextColor(Color.WHITE);
         ImageView imageView = (ImageView) (contentView.findViewById(R.id.imageView));//et l'image
         Picasso.with(getContext()).load(result.user.picture.large).into(imageView);
 

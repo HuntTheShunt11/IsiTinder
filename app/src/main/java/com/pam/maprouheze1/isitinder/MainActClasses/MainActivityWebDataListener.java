@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import com.pam.maprouheze1.isitinder.DataModel.Results;
 
-import java.net.NetworkInterface;
 
 /**
  * Created by Maxime on 25/02/2016.

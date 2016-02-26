@@ -1,6 +1,5 @@
 package com.pam.maprouheze1.isitinder.MainActClasses;
 
-import android.util.Log;
 import android.view.View;
 
 import com.pam.maprouheze1.isitinder.R;

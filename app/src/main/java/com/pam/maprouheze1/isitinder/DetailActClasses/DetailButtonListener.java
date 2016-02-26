@@ -29,6 +29,7 @@ public class DetailButtonListener implements View.OnClickListener{
             activity.showUser();//et on l'affiche
         } else {
             // update data
+            //certains listeners sont directement déclarés dans les classes ou ils sont appeles pour eviter la multiplication de fichiers ayant peu de code
             singUsers.recupData(new WebDataListener() { //s'il n'y a plus d'utilisateur suivant, on fait un appel reseau pour en recuperer
                 @Override
                 public void onDataReceived(Results listUsers) { //si on a reçu des donnees

@@ -3,6 +3,7 @@ package com.pam.maprouheze1.isitinder.MainActClasses;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.pam.maprouheze1.isitinder.DataModel.Singleton;
 import com.pam.maprouheze1.isitinder.DetailActClasses.DetailActivity;
@@ -57,13 +58,18 @@ class CardListener implements CardStack.CardEventListener {
         //quand la carte a ete enlevee (fin du mouvement) cette fonction est appelee
         Log.d("CardListener", "appel de discarded");
 
-        if (!singUsers.getListUsers().hasNext()) {//si le singleton n'a pas d'utilisateur suivant
-            // update data
-            Log.d("Cardlistener", "appel de recupData");
-            singUsers.recupData(new MainActivityWebDataListener(dataCardsAdapter, mainActivity));//on fait un appel reseau pour en recuperer
+        if(singUsers.getListUsers()!= null) {//si le singleton n'est pas vide
+            if (!singUsers.getListUsers().hasNext()) {//si le singleton n'a pas d'utilisateur suivant
+                // update data
+                Log.d("Cardlistener", "appel de recupData");
+                singUsers.recupData(new MainActivityWebDataListener(dataCardsAdapter, mainActivity));//on fait un appel reseau pour en recuperer
 
-        }else{//sinon s'il reste des utilisateurs dans le singleton
-            singUsers.getListUsers().next();//on incremente la position de l'utilisateur courant
+            } else {//sinon s'il reste des utilisateurs dans le singleton
+                singUsers.getListUsers().next();//on incremente la position de l'utilisateur courant
+            }
+        }else{//si le singleton est vide on indique à l'utilisateur de recharger des profils
+            String text = "Aucun utilisateur en mémoire, vérifier que les données mobiles ou le wifi sont activés et appuyer sur le bouton recharger pour récuperer des profils";
+            Toast.makeText(mainActivity.getApplicationContext(), text, Toast.LENGTH_LONG).show();
         }
     }
 

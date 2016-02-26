@@ -15,20 +15,18 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         >
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text= "Prenom"
-            android:id="@+id/name"
-            />
+            android:id="@+id/name" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=",age"
-            android:id="@+id/age"
-            />
+            android:id="@+id/age" />
 
     </LinearLayout>
 
